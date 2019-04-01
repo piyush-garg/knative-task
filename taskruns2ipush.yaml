@@ -1,0 +1,20 @@
+apiVersion: tekton.dev/v1alpha1
+kind: TaskRun
+metadata:
+  name: s2i-image-from-git-source-task-run
+spec:
+  taskRef:
+    name: build-s2i-image-from-git-source
+  serviceAccount: quay-auth-sa
+  inputs:
+    resources:
+      - name: source
+        resourceRef:
+          name: git
+  outputs:
+    resources:
+      - name: builtImage
+        resourceRef:
+          name: image
+  trigger:
+    type: manual

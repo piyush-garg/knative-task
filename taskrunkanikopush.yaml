@@ -1,0 +1,25 @@
+apiVersion: tekton.dev/v1alpha1
+kind: TaskRun
+metadata:
+  name: build-kaniko-image-from-git-source-task-run
+spec:
+  serviceAccount: quay-auth-sa
+  taskRef:
+    name: build-kaniko-image-from-git-source
+  trigger:
+    type: manual
+  inputs:
+    resources:
+      - name: source
+        resourceRef:
+          name: git
+    params:
+      - name: pathToDockerFile
+        value: Dockerfile
+      - name: pathToContext
+        value: /workspace/source/examples/microservices/leeroy-web
+  outputs:
+    resources:
+      - name: builtImage
+        resourceRef:
+          name: image
